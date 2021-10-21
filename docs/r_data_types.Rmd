@@ -1,0 +1,48 @@
+---
+title: "r_data_types"
+author: "Nikhil D."
+date: "10/21/2021"
+output:  
+  html_document:
+    keep_md: true
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+
+```
+
+```{r}
+vec_1 <- c(2, 5, 9, 10, 8, 12, 1, 0)
+
+vec_2 <- c(town = "Santa Barbara", location = "Rincon", swell = "south")
+
+class(vec_2)
+
+typeof(vec_2)
+
+vec_2[2]
+
+vec_2["location"]
+
+vec_2_e2 <- vec_2[2]
+
+# make dataframe
+df_1 <- data.frame(region = c('A','B','A','D'),
+                   species = c('otter','great white','sea lion','gray whale'),
+                   count = c(12,2,36,6))
+df_1
+
+# find df classes 
+class(df_1)
+
+class(df_1$species)
+
+max_count <- max(df_1$count)
+max_count
+
+
+
+```
+
