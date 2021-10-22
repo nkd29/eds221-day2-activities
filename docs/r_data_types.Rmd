@@ -10,10 +10,15 @@ output:
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 library(dplyr)
+library(readr)
+library(here)
+library(skimr)
+library(janitor)
+library(ggplot2)
 
 ```
 
-```{r}
+```{r,include=FALSE}
 vec_1 <- c(2, 5, 9, 10, 8, 12, 1, 0)
 
 vec_2 <- c(town = "Santa Barbara", location = "Rincon", swell = "south")
@@ -42,7 +47,113 @@ class(df_1$species)
 max_count <- max(df_1$count)
 max_count
 
+```
 
+
+
+```{r}
+# read in data
+mack_verts <- read_csv(here::here("data", "AS00601.csv"))
+skim(mack_verts)
+
+# clean stuff up
+mack_verts <- janitor::clean_names(mack_verts)
+
+mc_wt_5 <- mack_verts$WEIGHT[5]
+
+mc_length_8_20 <- mack_verts$LENGTH1[8:20]
+mc_length_8_20
+
+mc_dates <- mack_verts$SAMPLEDATE
 
 ```
+
+
+
+```{r}
+# Salamander data ! 
+
+mc_salamanders <- mack_verts %>% janitor::clean_names() %>% filter(species=='DITE')
+mc_salamanders
+
+
+# Plots salamander! 
+
+plot_snout_weight <- ggplot(data = mc_salamanders, aes(x = weight, y = length1)) +
+  geom_point(aes(color = -weight),alpha=0.85,size=1.5, show.legend = FALSE) +
+  theme_minimal()+
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(title = "Coastal Giant Salamander Snout Length Vs Weight",
+       x = "Weight (grams)",
+       y = "Snout-vent Length (mm)")
+
+plot_snout_weight
+
+
+ggsave(here::here("figs", "salamander_size.png"), height = 6, width = 7)
+```
+
+```{r,include=FALSE}
+
+# Cutthorat Trout data ! 
+
+mc_trout <- mack_verts %>% janitor::clean_names() %>% filter(species=='ONCL')
+mc_trout
+
+
+# Plots trouts! 
+
+plot_trout_weight <- ggplot(data = mc_trout, aes(x = weight, y = length1)) +
+  geom_point(aes(color = as.factor(reach)),alpha=0.85,size=1.5, show.legend = TRUE) +
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(title = "Cutthroat Trout Total Length Vs Weight",
+       x = "Weight (grams)",
+       y = "Snout-fork/Total Length (mm)")+
+  scale_color_manual(labels =(c('Lower','Middle','Upper')),values =c("#F8766D", "#00BA38", "#619CFF"))+
+  facet_wrap(~reach)
+
+plot_trout_weight
+
+# which colors were used in the plot above?
+colors_in_plot <- unique(ggplot_build(plot_trout_weight)$data[[1]]$colour)
+colors_in_plot
+
+ggsave(here::here("figs", "cutthroat_size.png"), height = 6, width = 7)
+```
+
+
+```{r}
+# olympic salamders
+
+mc_oly_sal <- mack_verts %>% filter(species=='RHOL')
+
+ggplot(data = mc_oly_sal, aes(x = weight, y = length1)) +
+  geom_point(aes(color = species), show.legend = TRUE) +
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(title = "Olympic Salamander Total Length Vs Weight",
+       x = "Weight (grams)",
+       y = "Snout-fork/Total Length (mm)")
+
+```
+```{r}
+# all species
+
+
+mc_all <- ggplot(data = mack_verts, aes(x = weight, y = length1)) +
+  geom_point(aes(color=reach, shape=species), show.legend = TRUE) +
+  theme(plot.title = element_text(hjust = 0.5))+
+  labs(title = "All Species Total Length Vs Weight",
+       x = "Weight (grams)",
+       y = "Snout-fork/Total Length (mm)")
+
+
+mc_all
+```
+
+
+
+
+
+
+
 
