@@ -190,7 +190,7 @@ ggsave(here::here("figs", "salamander_size.png"), height = 6, width = 7)
 
 
 ```r
-# olympic salamders
+# olympic salamanders
 
 mc_oly_sal <- mack_verts %>% filter(species=='RHOL')
 
