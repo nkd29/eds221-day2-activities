@@ -95,7 +95,7 @@ ggsave(here::here("figs", "salamander_size.png"), height = 6, width = 7)
 
 ```{r,include=FALSE}
 
-# Cutthorat Trout data ! 
+############# Cutthorat Trout data ! 
 
 mc_trout <- mack_verts %>% janitor::clean_names() %>% filter(species=='ONCL')
 mc_trout
@@ -121,9 +121,8 @@ colors_in_plot
 ggsave(here::here("figs", "cutthroat_size.png"), height = 6, width = 7)
 ```
 
-
-```{r}
-# olympic salamanders
+```{r,include=FALSE}
+############# olympic salamanders
 
 mc_oly_sal <- mack_verts %>% filter(species=='RHOL')
 
@@ -135,9 +134,9 @@ ggplot(data = mc_oly_sal, aes(x = weight, y = length1)) +
        y = "Snout-fork/Total Length (mm)")
 
 ```
-```{r}
-# all species
 
+```{r,include=FALSE}
+# all species
 
 mc_all <- ggplot(data = mack_verts, aes(x = weight, y = length1)) +
   geom_point(aes(color=reach, shape=species), show.legend = TRUE) +
@@ -145,7 +144,6 @@ mc_all <- ggplot(data = mack_verts, aes(x = weight, y = length1)) +
   labs(title = "All Species Total Length Vs Weight",
        x = "Weight (grams)",
        y = "Snout-fork/Total Length (mm)")
-
 
 mc_all
 ```
